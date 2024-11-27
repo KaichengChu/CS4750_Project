@@ -15,7 +15,6 @@ public class Participant {
     @Column(name = "Total_attended_events", columnDefinition = "INT DEFAULT 0")
     private Integer totalAttendedEvents;
 
-    // Getters and Setters
     public Long getUserId() {
         return userId;
     }
