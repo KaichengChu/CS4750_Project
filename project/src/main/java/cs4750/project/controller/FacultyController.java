@@ -17,8 +17,6 @@ import java.util.List;
 public class FacultyController {
 
     @Autowired
-    UserRepository userRepository;
-    @Autowired
     FacultyRepository facultyRepository;
 
     @GetMapping
@@ -34,13 +32,9 @@ public class FacultyController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addFaculty(@RequestBody Faculty faculty){
-        if(!userRepository.existsById(faculty.getUserId())){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("UserId does not exist!");
-        }
-
-        if(facultyRepository.existsById(faculty.getUserId())){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Faculty already exist!");
+    public ResponseEntity<?> addFaculty(@RequestBody Faculty faculty) {
+        if (facultyRepository.existsById(faculty.getUserId())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Faculty already exists!");
         }
 
         Faculty savedFaculty = facultyRepository.save(faculty);

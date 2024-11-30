@@ -1,13 +1,10 @@
 package cs4750.project.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Faculty")
-public class Faculty {
+public class Faculty extends User{
     @Id
     @Column(name = "User_Id")
     private Long userId;
@@ -15,12 +12,9 @@ public class Faculty {
     @Column(name = "Department")
     private String department;
 
-    public Faculty(Long userId, String department) {
-        this.userId = userId;
+    public Faculty(Long userId, String email, String lastName, String firstName, String department) {
+        super(userId, email, lastName, firstName);
         this.department = department;
-    }
-
-    public Faculty() {
     }
 
     public Long getUserId() {
