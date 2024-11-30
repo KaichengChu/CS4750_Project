@@ -3,8 +3,8 @@ package cs4750.project.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Participant")
-public class Participant {
+@Table(name = "Organizer")
+public class Organizer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,14 +14,14 @@ public class Participant {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "is_present")
-    private Boolean isPresent;
+    @Column(name = "organization_name")
+    private String organizationName;
 
-    public Participant() {}
+    public Organizer() {}
 
-    public Participant(User user, Boolean isPresent) {
+    public Organizer(User user, String organizationName) {
         this.user = user;
-        this.isPresent = isPresent;
+        this.organizationName = organizationName;
     }
 
     // Getters and setters
@@ -41,12 +41,11 @@ public class Participant {
         this.user = user;
     }
 
-    public Boolean getIsPresent() {
-        return isPresent;
+    public String getOrganizationName() {
+        return organizationName;
     }
 
-    public void setIsPresent(Boolean isPresent) {
-        this.isPresent = isPresent;
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
     }
 }
-
