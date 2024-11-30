@@ -5,24 +5,16 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "Faculty")
 public class Faculty extends User{
-    @Id
-    @Column(name = "User_Id")
-    private Long userId;
-
     @Column(name = "Department")
     private String department;
+
+    public Faculty() {
+        super(); // Call the no-arg constructor of the superclass (User)
+    }
 
     public Faculty(Long userId, String email, String lastName, String firstName, String department) {
         super(userId, email, lastName, firstName);
         this.department = department;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public String getDepartment() {
