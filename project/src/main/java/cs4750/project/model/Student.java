@@ -4,11 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name="Student")
-public class Student {
-    @Id
-    @Column(name = "User_id")
-    private Long userId;
-
+public class Student extends User{
     @Column(name = "Student_year")
     private Integer studentYear;
 
@@ -16,21 +12,17 @@ public class Student {
     private String major;
 
     // Constructors
-    public Student() {}
+    public Student() {
+        super();
+    }
 
-    public Student(Integer studentYear, String major) {
+    public Student(Long userId, String email, String lastName, String firstName, Integer studentYear, String major) {
+        super(userId, email, lastName, firstName);
         this.studentYear = studentYear;
         this.major = major;
     }
 
     // Getters and Setters
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
     public Integer getStudentYear() {
         return studentYear;

@@ -36,10 +36,6 @@ public class StudentController {
 
     @PostMapping
     public ResponseEntity<?> createStudent(@RequestBody Student student) {
-        if(!userRepository.existsById(student.getUserId())){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("UserId does not exist!");
-        }
-
         if(studentRepository.existsById(student.getUserId())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Student already exist!");
         }
