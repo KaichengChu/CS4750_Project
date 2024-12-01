@@ -11,19 +11,23 @@ public class Organizer {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false) // Foreign key referencing User
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "organization_id", nullable = false)
+    @JoinColumn(name = "organization_id", nullable = false) // Foreign key referencing Organization
     private Organization organization;
 
-    // Constructors
+    @Column(name = "role", nullable = false)
+    private String role;
+
+    // Default constructor
     public Organizer() {}
 
     public Organizer(User user, Organization organization, String role) {
         this.user = user;
         this.organization = organization;
+        this.role = role;
     }
 
     // Getters and Setters
@@ -49,5 +53,13 @@ public class Organizer {
 
     public void setOrganization(Organization organization) {
         this.organization = organization;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
