@@ -9,6 +9,8 @@ import cs4750.project.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -70,17 +72,38 @@ public class EventController {
     public ResponseEntity<?> updateEvent(@PathVariable Long id, @RequestBody Event updatedEvent) {
         return eventRepository.findById(id)
                 .map(existingEvent -> {
+                    // Update basic event information
                     existingEvent.setEventName(updatedEvent.getEventName());
                     existingEvent.setEventType(updatedEvent.getEventType());
                     existingEvent.setEventStartTime(updatedEvent.getEventStartTime());
                     existingEvent.setEventEndTime(updatedEvent.getEventEndTime());
                     existingEvent.setEventDescription(updatedEvent.getEventDescription());
 
+                    // Validate and update the organizer
+                    if (updatedEvent.getOrganizer() != null) {
+                        Optional<Organizer> organizer = organizerRepository.findById(updatedEvent.getOrganizer().getId());
+                        if (organizer.isEmpty()) {
+                            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Organizer not found!");
+                        }
+                        existingEvent.setOrganizer(organizer.get());
+                    }
+
+                    // Validate and update the location
+                    if (updatedEvent.getLocation() != null) {
+                        Optional<Location> location = locationRepository.findById(updatedEvent.getLocation().getLocationId());
+                        if (location.isEmpty()) {
+                            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Location not found!");
+                        }
+                        existingEvent.setLocation(location.get());
+                    }
+
+                    // Save the updated event
                     Event savedEvent = eventRepository.save(existingEvent);
                     return ResponseEntity.ok(savedEvent);
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
+
 
     // Delete an event by ID
     @DeleteMapping("/{id}")
