@@ -14,17 +14,19 @@ public class Organizer {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "organization_name")
-    private String organizationName;
+    @ManyToOne
+    @JoinColumn(name = "organization_id", nullable = false)
+    private Organization organization;
 
+    // Constructors
     public Organizer() {}
 
-    public Organizer(User user, String organizationName) {
+    public Organizer(User user, Organization organization, String role) {
         this.user = user;
-        this.organizationName = organizationName;
+        this.organization = organization;
     }
 
-    // Getters and setters
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -41,11 +43,11 @@ public class Organizer {
         this.user = user;
     }
 
-    public String getOrganizationName() {
-        return organizationName;
+    public Organization getOrganization() {
+        return organization;
     }
 
-    public void setOrganizationName(String organizationName) {
-        this.organizationName = organizationName;
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
     }
 }

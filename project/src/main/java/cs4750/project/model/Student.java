@@ -8,7 +8,7 @@ public class Student extends User{
     @Column(name = "Student_year")
     private Integer studentYear;
 
-    @Column(name = "Major", length = 10)
+    @Column(name = "Major", length = 20)
     private String major;
 
     // Constructors

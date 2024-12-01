@@ -53,7 +53,7 @@ public class ParticipantController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Participant not found");
         }
 
-        participant.setTotalAttendedEvents(totalAttendedEvents);
+        //participant.setTotalAttendedEvents(totalAttendedEvents);
         participantRepository.save(participant);
 
         return ResponseEntity.status(HttpStatus.OK).body(participant);

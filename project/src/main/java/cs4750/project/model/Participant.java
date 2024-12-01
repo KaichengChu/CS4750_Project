@@ -33,8 +33,8 @@ public class Participant {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return user.getUserId();
     }
 
     public void setUser(User user) {
