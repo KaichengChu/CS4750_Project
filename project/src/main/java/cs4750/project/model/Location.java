@@ -1,25 +1,34 @@
 package cs4750.project.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Location")
 public class Location {
+
     @Id
-    @Column(name = "Location_id")
+    @Column(name = "Location_ID", nullable = false) // Primary key but not auto-generated
     private Long locationId;
 
-    @Column(name = "Location_name", length = 50)
+    @Column(name = "Location_Name", nullable = false)
     private String locationName;
 
-    @Column(name = "Location_description", length = 60)
+    @Column(name = "Location_Description")
     private String locationDescription;
 
-    @Column(name = "capacity")
-    private Integer capacity;
+    @Column(name = "Location_Capacity", nullable = false)
+    private Integer locationCapacity;
+
+    // Default Constructor
+    public Location() {}
+
+    // Constructor with fields
+    public Location(Long locationId, String locationName, String locationDescription, Integer locationCapacity) {
+        this.locationId = locationId;
+        this.locationName = locationName;
+        this.locationDescription = locationDescription;
+        this.locationCapacity = locationCapacity;
+    }
 
     // Getters and Setters
     public Long getLocationId() {
@@ -46,11 +55,11 @@ public class Location {
         this.locationDescription = locationDescription;
     }
 
-    public Integer getCapacity() {
-        return capacity;
+    public Integer getLocationCapacity() {
+        return locationCapacity;
     }
 
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
+    public void setLocationCapacity(Integer locationCapacity) {
+        this.locationCapacity = locationCapacity;
     }
 }

@@ -3,9 +3,9 @@ package cs4750.project.controller;
 import cs4750.project.model.Location;
 import cs4750.project.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
@@ -17,59 +17,51 @@ public class LocationController {
     @Autowired
     private LocationRepository locationRepository;
 
-    @PostMapping
-    public ResponseEntity<?> createLocation(@RequestBody Location location) {
-        if (locationRepository.existsById(location.getLocationId())){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Already Exist!");
-        }
-
-
-        Location savedLocation = locationRepository.save(location);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedLocation);
-    }
-
+    // Get all locations
     @GetMapping
-    public List<Location> getAllLocations(){
+    public List<Location> getAllLocations() {
         return locationRepository.findAll();
     }
 
-    @GetMapping("/{locationId}")
-    public ResponseEntity<?> getLocation(@PathVariable Long locationId) {
-        Location location = locationRepository.findById(locationId).orElse(null);
-
-        if (location == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Location not found");
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(location);
+    // Get a location by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Location> getLocationById(@PathVariable Long id) {
+        return locationRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    // Update an existing Location
-    @PutMapping("/{locationId}")
-    public ResponseEntity<?> updateLocation(@PathVariable Long locationId, @RequestBody Location location) {
-        Location existingLocation = locationRepository.findById(locationId).orElse(null);
-
-        if (existingLocation == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Location not found");
+    // Create a new location
+    @PostMapping
+    public ResponseEntity<?> createLocation(@RequestBody Location location) {
+        if (locationRepository.existsById(location.getLocationId())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Location ID already exists!");
         }
-        existingLocation.setLocationName(location.getLocationName());
-        existingLocation.setLocationDescription(location.getLocationDescription());
-        existingLocation.setCapacity(location.getCapacity());
-
-        locationRepository.save(existingLocation);
-        return ResponseEntity.status(HttpStatus.OK).body(existingLocation);
+        Location savedLocation = locationRepository.save(location);
+        return ResponseEntity.status(201).body(savedLocation);
     }
 
+    // Update an existing location
+    @PutMapping("/{id}")
+    public ResponseEntity<Location> updateLocation(@PathVariable Long id, @RequestBody Location updatedLocation) {
+        return locationRepository.findById(id)
+                .map(existingLocation -> {
+                    existingLocation.setLocationName(updatedLocation.getLocationName());
+                    existingLocation.setLocationDescription(updatedLocation.getLocationDescription());
+                    existingLocation.setLocationCapacity(updatedLocation.getLocationCapacity());
+                    Location savedLocation = locationRepository.save(existingLocation);
+                    return ResponseEntity.ok(savedLocation);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
 
-    @DeleteMapping("/{locationId}")
-    public ResponseEntity<?> deleteLocation(@PathVariable Long locationId) {
-        Location location = locationRepository.findById(locationId).orElse(null);
-
-        if (location == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Location not found");
+    // Delete a location by ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteLocation(@PathVariable Long id) {
+        if (locationRepository.existsById(id)) {
+            locationRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
         }
-
-        locationRepository.delete(location);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Location deleted successfully");
+        return ResponseEntity.notFound().build();
     }
 }
